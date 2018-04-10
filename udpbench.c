@@ -38,7 +38,8 @@ static void sig_alarm_handler(int signal)
 	time_expired = 1;
 }
 
-static void bench_loop(int *res_pipe, int benchtime, char *address, int port, char *buf, int buflen) {
+static void bench_loop(int *res_pipe, int benchtime, char *address, int port, char *buf, int buflen)
+{
 	struct sockaddr_in sa_server, sa_recv;
 	int sa_len = sizeof(sa_server), sa_recvlen = sizeof(sa_server);
 	int sockfd = 0;
@@ -61,29 +62,24 @@ static void bench_loop(int *res_pipe, int benchtime, char *address, int port, ch
 
 	alarm(benchtime);
 
-	if ((sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
-	{
+	if ((sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
 		die("socket fail\n");
 	}
 
 	memset((char *) &sa_server, 0, sizeof(sa_server));
 	sa_server.sin_family = AF_INET;
 	sa_server.sin_port = htons(port);
-	if (inet_aton(address , &sa_server.sin_addr) == 0) 
-	{
+	if (inet_aton(address , &sa_server.sin_addr) == 0) {
 		die("inet_aton() failed\n");
 	}
 
-	while(time_expired == 0)
-	{
-		if (sendto(sockfd, buf, buflen, 0, (struct sockaddr *) &sa_server, sa_len) == -1)
-		{
+	while(time_expired == 0) {
+		if (sendto(sockfd, buf, buflen, 0, (struct sockaddr *) &sa_server, sa_len) == -1) {
 			die("sendto()");
 		}
 
 		memset(recv_buf,'\0', recv_buflen);
-		if (recvfrom(sockfd, recv_buf, recv_buflen, 0, (struct sockaddr *) &sa_recv, &sa_recvlen) == -1)
-		{
+		if (recvfrom(sockfd, recv_buf, recv_buflen, 0, (struct sockaddr *) &sa_recv, &sa_recvlen) == -1) {
 			if (errno == EINTR) {
 				//time_t finish = time(NULL);
 				//printf("[%d]start : %s, finish : %s\n", getpid(), ctime(&start),ctime(&finish));
@@ -155,8 +151,7 @@ int main(int argc, char *argv[])
 	}
 
 	int res_pipe[2];
-	if(pipe(res_pipe))
-	{
+	if(pipe(res_pipe)) {
 		die("pipe failed.");
 	}
 

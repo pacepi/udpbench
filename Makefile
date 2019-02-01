@@ -12,7 +12,7 @@ $(UDPBENCH) :
 	gcc udpbench.c -g -O2 -o $(UDPBENCH)
 
 $(UDPSERVER) :
-	gcc udpbench.c -g -O2 -o $(UDPSERVER)
+	gcc udpserver.c -g -O2 -o $(UDPSERVER)
 
 clean :
 	@echo "cleaning ..."
